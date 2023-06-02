@@ -2,13 +2,19 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./Components/Home";
 import Appointments from "./Components/Appointments";
 import Book from "./Components/Book";
+import baseline from "./Assets/baseline.svg";
+import dashboard from "./Assets/dashboard.svg";
+import emergency from "./Assets/emergency.svg";
+import healthmale from "./Assets/healthmale.svg";
+import image6 from "./Assets/image6.svg";
+import image7 from "./Assets/image7.svg";
 
 export default function App() {
   const location = useLocation();
   return (
     <div className="grid grid-cols-12 h-[100vh] h3">
       {/* Navbar */}
-      <div className=" col-span-1 col-start-1 flex flex-col justify-center space-y-24 w-3/4 mx-auto text-white bg-slate-800 p-2 my-2 rounded-full items-center">
+      {/* <div className=" col-span-1 col-start-1 flex flex-col justify-center space-y-24 w-3/4 mx-auto text-white bg-slate-800 p-2 my-2 rounded-full items-center">
         <Link to="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +74,44 @@ export default function App() {
               clip-rule="evenodd"
             />
           </svg>
+        </Link>
+      </div> */}
+      <div className=" col-span-1 col-start-1 flex flex-col justify-center space-y-24 w-3/4 mx-auto text-slate-800 border-2 border-r-8 border-b-8 border-slate-800 p-2 my-2 rounded-full items-center">
+        <Link to="/" className="relative">
+          <img src={dashboard} className="w-6 h-6" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            Dashboard
+          </span>
+        </Link>
+        <Link to="/history" className="relative">
+          <img src={baseline} className="w-6 h-6 text-white" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            History
+          </span>
+        </Link>
+        <Link to="/emergency" className="relative">
+          <img src={emergency} className="w-6 h-6" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            Emergency
+          </span>
+        </Link>
+        <Link to="/book" className="relative">
+          <img src={healthmale} className="w-6 h-6" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            Doctor
+          </span>
+        </Link>
+        <Link to="/prescription" className="relative">
+          <img src={image6} className="w-6 h-6" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            Prescription
+          </span>
+        </Link>
+        <Link to="/pharmacy" className="relative">
+          <img src={image7} className="w-6 h-6" />
+          <span className="text-xs absolute bg-white rounded-full px-2 py-1 border-slate-600 border-2 ">
+            Pharmacy
+          </span>
         </Link>
       </div>
 

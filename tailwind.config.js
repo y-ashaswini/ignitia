@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        bbglue: "#B3E2E3",
+      },
+    },
   },
   plugins: [],
 };

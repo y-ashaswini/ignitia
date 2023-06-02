@@ -2,12 +2,14 @@ import Calendar from "./Calendar";
 
 export default function Home() {
   return (
-    <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col">
+    <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col border-r-8 border-b-8 border-2 border-slate-800">
       <div className="text-[8vh] text-slate-600 mb-2">WELCOME BACK, ANNA!</div>
       <span className="grid grid-cols-2 gap-8">
         <span className="flex flex-col gap-2">
           <span className="flex gap-2 items-center">
-            <div className="text-xl text-slate-600">Your Medication</div>
+            <div className="text-xl text-slate-600">
+              Your Current Medication
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -19,7 +21,7 @@ export default function Home() {
             </svg>
           </span>
 
-          <span className="bg-white p-4 rounded-md flex flex-col gap-2">
+          <span className="bg-white p-4 rounded-md flex border-2 border-r-8 border-b-8 border-slate-700 flex-col gap-2">
             <span className="flex justify-between gap-24 text-slate-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +86,7 @@ export default function Home() {
             </svg>
           </span>
           <span className="flex gap-4">
-            <span className="bg-white p-4 rounded-md flex flex-col gap-2 px-8">
+            <span className="bg-white p-4 rounded-md flex flex-col gap-2 px-8 border-2 border-r-8 border-b-8 border-slate-700 ">
               <span className="flex flex-col gap-2 text-slate-400 text-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +105,7 @@ export default function Home() {
                 <span className="text-sm text-slate-600">Pulse</span>
               </span>
             </span>
-            <span className="bg-white p-4 rounded-md flex flex-col gap-2 px-8">
+            <span className="bg-white p-4 rounded-md flex flex-col gap-2 px-8 border-2 border-r-8 border-b-8 border-slate-700 ">
               <span className="flex flex-col gap-2 text-slate-400 text-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -122,12 +124,31 @@ export default function Home() {
         </span>
 
         {/* Diet Plan */}
-        <div className="text-xl text-slate-600">Diet Plan</div>
+        <span className="flex flex-col gap-4">
+          <div className="text-xl text-slate-600">Diet Plan</div>
+          <div className="flex flex-col gap-1">
+            <span className="bg-slate-600 px-2 py-1 text-white font-bold">
+              SUNDAY
+            </span>
+            <span className="bg-slate-600 px-2 py-1 text-white font-bold">
+              MONDAY    
+            </span>
+            <span className="bg-slate-600 px-2 py-1 text-white font-bold">
+              TUESDAY
+            </span>
+            <span className="bg-slate-600 px-2 py-1 text-white font-bold">
+              WEDNESDAY
+            </span>
+            <span className="bg-slate-600 px-2 py-1 text-white font-bold">
+              THURSDAY
+            </span>
+          </div>
+        </span>
 
         {/* <Calendar /> */}
         <span className="flex flex-col gap-4">
-        <div className="text-xl text-slate-600">Calendar</div>
-        <Calendar/>
+          <div className="text-xl text-slate-600">Calendar</div>
+          <Calendar />
         </span>
       </span>
     </div>

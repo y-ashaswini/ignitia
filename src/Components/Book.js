@@ -16,6 +16,7 @@ export default function Book() {
       phone: "6546549877",
       hospital: "Madhya National Hospital",
       hospital_address: "007, Smith Street, Paradis",
+      available: false,
     },
     {
       name: "Dr. F. Smith",
@@ -25,6 +26,7 @@ export default function Book() {
       phone: "3248760982",
       hospital: "Gong National Hospital",
       hospital_address: "160, Texh Road, Kingstown",
+      available: false,
     },
     {
       name: "Dr. M. Eager",
@@ -34,6 +36,7 @@ export default function Book() {
       phone: "6546549877",
       hospital: "Madhya National Hospital",
       hospital_address: "007, Smith Street, Paradis",
+      available: true,
     },
     {
       name: "Dr. F. Smith",
@@ -43,11 +46,14 @@ export default function Book() {
       phone: "3248760982",
       hospital: "Gong National Hospital",
       hospital_address: "160, Texh Road, Kingstown",
+      available: true,
     },
   ];
   return (
-    <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col">
-      <div className="text-xl text-slate-600">Make an appointment that will help you! Choose a doctor.</div>
+    <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col border-r-8 border-b-8 border-2 border-slate-800">
+      <div className="text-xl text-slate-600">
+        Make an appointment that will help you! Choose a doctor.
+      </div>
       <form className="flex w-3/4 gap-2 my-4 text-slate-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
