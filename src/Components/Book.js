@@ -1,57 +1,36 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Card from "./Card";
 import { userDataContext } from "../App";
 import NotSignedin from "../Authentication/NotSignedin";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_API_ANON_KEY
+);
 
 export default function Book() {
   const { u_email } = useContext(userDataContext);
   const [searchDoc, setSearchDoc] = useState("");
+  const [doctordata, setDoctordata] = useState("");
   function handleSearchDoc() {
     console.log("search text: ", searchDoc);
   }
 
-  const doctordata = [
-    {
-      name: "Dr. M. Eager",
-      picture: "@",
-      department: "General Surgeon",
-      npi: "098098",
-      phone: "6546549877",
-      hospital: "Madhya National Hospital",
-      hospital_address: "007, Smith Street, Paradis",
-      available: false,
-    },
-    {
-      name: "Dr. F. Smith",
-      picture: "@",
-      department: "Pediatrician",
-      npi: "098098",
-      phone: "3248760982",
-      hospital: "Gong National Hospital",
-      hospital_address: "160, Texh Road, Kingstown",
-      available: false,
-    },
-    {
-      name: "Dr. M. Eager",
-      picture: "@",
-      department: "General Surgeon",
-      npi: "098098",
-      phone: "6546549877",
-      hospital: "Madhya National Hospital",
-      hospital_address: "007, Smith Street, Paradis",
-      available: true,
-    },
-    {
-      name: "Dr. F. Smith",
-      picture: "@",
-      department: "Pediatrician",
-      npi: "098098",
-      phone: "3248760982",
-      hospital: "Gong National Hospital",
-      hospital_address: "160, Texh Road, Kingstown",
-      available: true,
-    },
-  ];
+  useEffect(() => {
+    async function getDoctors() {
+      let { data: docData, error } = await supabase.from("doctor").select("*");
+      if (error) {
+        console.log("error: ", error);
+      } else {
+        // console.log("Doctor data: ", docData);
+        setDoctordata(docData);
+      }
+    }
+
+    getDoctors();
+  }, []);
+
   return (
     <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col border-r-8 border-b-8 border-2 border-slate-800">
       {!u_email || (u_email && u_email.trim()) === "" ? (
@@ -84,10 +63,9 @@ export default function Book() {
             />
           </form>
           <div className="flex overflow-x-scroll max-w-[60vw] gap-4 my-4 py-4 scrollbar-thumb-slate-600 scrollbar-thumb-rounded-2xl scrollbar-track-slate-100 scrollbar-thin">
-            {doctordata.map((each) => (
-              <Card data={each} />
-            ))}
+            {doctordata && doctordata.map((each) => <Card data={each} />)}
           </div>
+          <div></div>
         </>
       )}
     </div>

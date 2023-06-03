@@ -20,15 +20,19 @@ export default function Signup() {
     set_u_id,
     set_u_uuid,
     set_u_birth,
-    set_u_adhar
+    set_u_adhar,
+    set_u_npi,
+    set_u_role,
   } = useContext(userDataContext);
   let navigate = useNavigate();
 
   const [fname, setfname] = useState("");
   const [lname, setlname] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [dob, setdob] = useState("");
   const [adhar, setAdhar] = useState("");
+  const [npi, setNpi] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmpass] = useState("");
   const [ph, setph] = useState("");
@@ -45,35 +49,73 @@ export default function Signup() {
   };
 
   async function addDatabase(param_u_uuid) {
-    const insertdata = [
-      {
-        lname: lname,
-        fname: fname,
-        user_uuid: param_u_uuid,
-        email: email,
-        adhar: adhar,
-        phone: ph,
-        birth: dob
-      },
-    ];
-    console.log("inserting data: ", insertdata);
-    let { data: adddata, err } = await supabase
-      .from("user")
-      .insert(insertdata)
-      .select();
-    if (err) {
-      toast.error("Error: " + err, toast_param);
-      return "";
+    if (role === "Doctor") {
+      const insertdata = [
+        {
+          lname: lname,
+          fname: fname,
+          user_uuid: param_u_uuid,
+          email: email,
+          npi: npi,
+          phone: ph,
+          birth: dob,
+          role: role,
+        },
+      ];
+      console.log("inserting data: ", insertdata);
+      let { data: adddata, err } = await supabase
+        .from("doctor")
+        .insert(insertdata)
+        .select();
+      if (err) {
+        toast.error("Error: " + err, toast_param);
+        return "";
+      } else {
+        set_u_id(adddata[0].id);
+        set_u_fname(adddata[0].fname);
+        set_u_lname(adddata[0].lname);
+        set_u_birth(adddata[0].birth);
+        set_u_npi(adddata[0].npi);
+        set_u_adhar(adddata[0].adhar);
+        set_u_birth(adddata[0].birth);
+        set_u_role(adddata[0].role);
+        toast.info("Account created successfully", toast_param);
+        return adddata;
+      }
+    } else {
+      const insertdata = [
+        {
+          lname: lname,
+          fname: fname,
+          user_uuid: param_u_uuid,
+          email: email,
+          adhar: adhar,
+          phone: ph,
+          birth: dob,
+          role: role,
+        },
+      ];
+      console.log("inserting data: ", insertdata);
+      let { data: adddata, err } = await supabase
+        .from("patient")
+        .insert(insertdata)
+        .select();
+      if (err) {
+        toast.error("Error: " + err, toast_param);
+        return "";
+      } else {
+        set_u_id(adddata[0].id);
+        set_u_fname(adddata[0].fname);
+        set_u_lname(adddata[0].lname);
+        set_u_birth(adddata[0].birth);
+        set_u_npi(adddata[0].npi);
+        set_u_adhar(adddata[0].adhar);
+        set_u_birth(adddata[0].birth);
+        set_u_role(adddata[0].role);
+        toast.info("Account created successfully", toast_param);
+        return adddata;
+      }
     }
-    // console.log("added data: ", adddata);
-    set_u_id(adddata[0].id);
-    set_u_fname(adddata[0].fname);
-    set_u_lname(adddata[0].lname);
-    set_u_birth(adddata[0].birth);
-    set_u_adhar(adddata[0].adhar);
-    set_u_birth(adddata[0].birth);
-    toast.info("Account created successfully", toast_param);
-    return adddata;
   }
 
   async function addUser() {
@@ -168,14 +210,64 @@ export default function Signup() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          <span className="flex gap-x-4">
+            <span className="flex flex-col space-y-2 flex-1">
+              <span className="font-bold">Date of Birth</span>
+              <input
+                type="date"
+                className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
+                value={dob}
+                onChange={(e) => setdob(e.target.value)}
+              />
+            </span>
 
-          <input
-            type="text"
-            placeholder="Adhar Card Number"
-            className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
-            value={adhar}
-            onChange={(e) => setAdhar(e.target.value)}
-          />
+            <span className="flex flex-col space-y-2 flex-1">
+              <span className="flex gap-2 items-center">
+                <span className="font-bold">Role</span>
+                <span
+                  className="px-1 py-[0.5] border-2 border-slate-600 rounded-full cursor-pointer"
+                  onClick={function () {
+                    setRole("Doctor");
+                  }}
+                >
+                  Doctor
+                </span>
+                <span
+                  className="px-1 py-[0.5] border-2 border-slate-600 rounded-full cursor-pointer"
+                  onClick={function () {
+                    setRole("Patient");
+                  }}
+                >
+                  Patient
+                </span>
+              </span>
+              <input
+                type="text"
+                className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
+                value={role}
+              />
+            </span>
+          </span>
+
+          {role === "" ? (
+            <span className="PLEASE SELECT YOUR ROLE TO VIEW THIS FIELD."></span>
+          ) : role === "Doctor" ? (
+            <input
+              type="text"
+              placeholder="Lisence Number"
+              className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
+              value={npi}
+              onChange={(e) => setNpi(e.target.value)}
+            />
+          ) : (
+            <input
+              type="text"
+              placeholder="Adhar Card Number"
+              className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
+              value={adhar}
+              onChange={(e) => setAdhar(e.target.value)}
+            />
+          )}
 
           <span className="flex gap-x-4">
             <input
@@ -208,16 +300,6 @@ export default function Signup() {
                 onChange={(e) => setph(e.target.value)}
               />
             </span>
-          </span>
-
-          <span className="flex flex-col space-y-2 flex-1">
-            <span className="font-bold">Date of Birth</span>
-            <input
-              type="date"
-              className="flex-1 outline-none border-2 border-b-4 border-r-4 border-slate-500 rounded-md px-2 py-1"
-              value={dob}
-              onChange={(e) => setdob(e.target.value)}
-            />
           </span>
 
           <button

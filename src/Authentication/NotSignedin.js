@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 export default function NotSignedin() {
   let navigate = useNavigate();
   return (
-    <>
+    <span className="flex flex-col gap-2">
       <div className="md:text-3xl text-lg font-bold text-slate-600">
+        Welcome to Sekhmed
+      </div>
+      <div className="md:text-2xl text-lg text-slate-600">
         You're Signed Out!
       </div>
       <button
@@ -13,6 +16,6 @@ export default function NotSignedin() {
       >
         GO TO SIGN IN PAGE
       </button>
-    </>
+    </span>
   );
 }

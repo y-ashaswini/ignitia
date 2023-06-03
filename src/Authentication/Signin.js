@@ -20,7 +20,8 @@ export default function Signin() {
     set_u_ph,
     set_u_id,
     set_u_uuid,
-    set_u_adhar
+    set_u_adhar,
+    set_u_role
   } = useContext(userDataContext);
 
   const toast_param = {
@@ -40,7 +41,7 @@ export default function Signin() {
 
   async function getUserDeets(useruuid) {
     let { data: userdbdata, userdberror } = await supabase
-      .from("user")
+      .from("patient")
       .select("*")
       .eq("user_uuid", useruuid);
     if (userdberror) console.log("user id error: ", userdberror);
@@ -81,6 +82,7 @@ export default function Signin() {
           set_u_fname(userdbdata[0].fname);
           set_u_lname(userdbdata[0].lname);
           set_u_adhar(userdbdata[0].adhar);
+          set_u_role(userdbdata[0].role);
           toast.info("Sign in successful", toast_param);
         }
       }
@@ -144,7 +146,7 @@ export default function Signin() {
               />
 
               <button
-                className=" text-slate-600 bg-bbglue font-bold text-center px-3 py-1 rounded-sm cursor-pointer border-2 border-r-8 border-b-8 border-slate-800 outline-none w-fit"
+                className="text-slate-600 bg-bbglue font-bold text-center px-3 py-1 rounded-sm cursor-pointer border-2 border-r-8 border-b-8 border-slate-800 outline-none w-fit"
                 onClick={(e) => handleSignin(e)}
               >
                 SIGN IN
@@ -165,13 +167,13 @@ export default function Signin() {
       ) : (
         <>
           <div className="md:text-3xl my-2 text-lg font-bold text-slate-600">
-            You're already Signed in.
+            You're Signed in.
           </div>
           <Link
             to="/"
-            className="bg-slate-600 text-white font-bold text-center px-3 py-1 rounded-sm cursor-pointer outline-none"
+            className="text-slate-600 bg-bbglue font-bold text-center px-3 py-1 rounded-sm cursor-pointer border-2 border-r-8 border-b-8 border-slate-800 outline-none w-fit"
           >
-            GO HOME
+            GO TO HOME PAGE
           </Link>
         </>
       )}

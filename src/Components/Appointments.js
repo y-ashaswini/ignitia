@@ -1,5 +1,40 @@
+import { useContext, useEffect, useState } from "react";
+import { userDataContext } from "../App";
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_API_ANON_KEY
+);
+
 export default function Appointments() {
+  const [appData, setAppData] = useState("");
   const currPath = window.location.pathname.split("/").slice(-1)[0];
+  const { u_id, u_role } = useContext(userDataContext);
+  useEffect(() => {
+    async function f() {
+      if (u_role === "Patient") {
+        let { data: data, err } = await supabase
+          .from("appointments")
+          .select("*")
+          .eq("patient_id", u_id);
+        if (err || data == null) console.log("user db error: ", err);
+        else {
+          setAppData(data[0]);
+        }
+      } else {
+        let { data: data, err } = await supabase
+          .from("appointments")
+          .select("*")
+          .eq("doctor_id", u_id);
+        if (err || data == null) console.log("user db error: ", err);
+        else {
+          setAppData(data[0]);
+        }
+      }
+    }
+
+    f();
+  }, []);
 
   return (
     <div className="h-full bg-bbglue rounded-3xl p-5 flex gap-4 flex-col text-slate-600 border-r-8 border-b-8 border-2 border-slate-800">
