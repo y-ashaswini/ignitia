@@ -8,7 +8,7 @@ export default function Card({ data }) {
   // Hospital Address
 
   return (
-    <div className="bg-white rounded-md py-4 p-4 border-r-8 border-b-8 border-2 border-slate-800 lg:w-[60vh] md:w-[45vh]">
+    <div className="bg-white rounded-md py-4 p-4 border-r-8 border-b-8 border-2 border-slate-800 lg:min-w-[60vh] md:min-w-[45vh]">
       <span className="flex justify-between">
         <span className="flex flex-col text-left gap-4">
           <span className="flex gap-2 items-center">
