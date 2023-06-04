@@ -2,10 +2,24 @@ import { useContext, useEffect, useState } from "react";
 import { userDataContext } from "../App";
 import NotSignedin from "../Authentication/NotSignedin";
 import { createClient } from "@supabase/supabase-js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL,
   process.env.REACT_APP_SUPABASE_API_ANON_KEY
 );
+
+const toast_param = {
+  position: "top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+};
 
 export default function BookExpand() {
   const currentdoc = window.location.pathname.split("/").slice(-1)[0];
@@ -29,9 +43,27 @@ export default function BookExpand() {
     f();
   }, []);
 
+  function handleSubmit() {
+    toast.info("Booked appointment. Please wait for confirmation", toast_param);
+  }
+
   const { u_email } = useContext(userDataContext);
   return (
     <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col border-r-8 border-b-8 border-2 border-slate-800">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        className="font-bold text-slate-600 rounded-lg"
+      />
+
       {!u_email || (u_email && u_email.trim()) === "" ? (
         <NotSignedin />
       ) : (
@@ -75,6 +107,12 @@ export default function BookExpand() {
                 value={app_time}
                 onChange={(e) => set_app_time(e.target.value)}
               />
+              <div
+                className="border-2 border-r-4 border-b-4 border-slate-600 px-2 py-2 cursor-pointer rounded-md w-fit bg-bbglue"
+                onClick={handleSubmit}
+              >
+                SUBMIT BOOKING
+              </div>
             </form>
           </span>
         </div>

@@ -1,6 +1,6 @@
 import { userDataContext } from "../App";
 import { createClient } from "@supabase/supabase-js";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import NotSignedin from "./NotSignedin";
 import Signout from "./Signout";
 import emailjs from "@emailjs/browser";
@@ -13,8 +13,39 @@ const supabase = createClient(
 );
 
 export default function Account() {
+  const {
+    u_email,
+    u_fname,
+    u_lname,
+    u_ph,
+    u_id,
+    u_uuid,
+    u_birth,
+    u_adhar,
+    u_role,
+    u_db,
+    set_u_db,
+  } = useContext(userDataContext);
+
   const form = useRef();
   const [attachment, setAttachment] = useState([]);
+  const [currattach, setCurrattach] = useState("");
+
+  useEffect(() => {
+    console.log("u_db: ", u_db);
+    u_db && setCurrattach(JSON.parse(u_db));
+  }, [currattach]);
+
+  const toast_param = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  };
 
   function handleAttachimg(e) {
     const img = e.target.files[0];
@@ -26,17 +57,6 @@ export default function Account() {
   }
 
   function handleQuery(e) {
-    const toast_param = {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    };
-
     e.preventDefault();
     emailjs
       .sendForm(
@@ -59,26 +79,27 @@ export default function Account() {
     );
   }
 
-  const {
-    u_email,
-    u_fname,
-    u_lname,
-    u_ph,
-    u_id,
-    u_uuid,
-    u_birth,
-    u_adhar,
-    u_role,
-    u_db,
-    set_u_db,
-  } = useContext(userDataContext);
-
   async function handleUpload() {
+    let f;
+    if (currattach === "") {
+      f = attachment;
+    } else if (attachment === "") {
+      f = currattach;
+    } else {
+      f = {
+        ...currattach,
+        ...attachment,
+      };
+    }
+
+    set_u_db(JSON.stringify(f));
+
     const { data, error } = await supabase
       .from("patient")
-      .update({ documents: JSON.stringify(attachment) })
-      .eq("id", u_id)
-      .select();
+      .update({ documents: JSON.stringify(f) })
+      .eq("id", u_id);
+    if (error) console.log("error: ", error);
+    else toast.info("Uploaded", toast_param);
   }
 
   return (
@@ -213,11 +234,33 @@ export default function Account() {
               </button>
             </span>
           </span>
-
           <span className="flex gap-2 my-2 flex-wrap">
             {attachment &&
               attachment.map((each) => {
-                console.log(each.split(";")[0]);
+                // console.log(each.split(";")[0]);
+                return each.split(";")[0] === "data:text/plain" ||
+                  each.split(";")[0] === "data:application/pdf" ||
+                  each.split(";")[0] ===
+                    "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                  <a
+                    href={each}
+                    download
+                    className="bg-slate-400 px-2 py-1 rounded-sm text-white h-fit font-bold"
+                  >
+                    Document
+                  </a>
+                ) : (
+                  <img src={each} className="rounded-lg h-[20vh] w-fit m-1" />
+                );
+              })}
+          </span>
+          <div className="md:text-2xl w-full text-lg mt-4 font-bold text-slate-600">
+            SAVED DOCS:
+          </div>
+          <span className="flex gap-2 my-2 flex-wrap">
+            {currattach &&
+              currattach.map((each) => {
+                // console.log(each.split(";")[0]);
                 return each.split(";")[0] === "data:text/plain" ||
                   each.split(";")[0] === "data:application/pdf" ||
                   each.split(";")[0] ===

@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { userDataContext } from "../App";
 import NotSignedin from "../Authentication/NotSignedin";
+import stock from "../Assets/stock-graph.png";
 
 export default function History() {
   const { u_email } = useContext(userDataContext);
+ 
   return (
     <div className="w-full h-full bg-slate-100 rounded-3xl p-5 flex flex-col border-r-8 border-b-8 border-2 border-slate-800">
       {!u_email || (u_email && u_email.trim()) === "" ? (
@@ -26,7 +28,9 @@ export default function History() {
                 BLOOD TEST
               </span>
             </span>
-            <span className="border-2 border-b-4 border-r-4 w-1/2 h-full border-slate-600 rounded-md"></span>
+            <span className="border-2 border-b-4 border-r-4 w-1/2 h-fit border-slate-600 rounded-md">
+              <img src={stock}/>
+            </span>
           </span>
           <span className="text-2xl font-bold my-4">Recent Visits</span>
           <span className="flex flex-col items-left gap-2">

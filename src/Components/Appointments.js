@@ -12,25 +12,27 @@ export default function Appointments() {
   const { u_id, u_role } = useContext(userDataContext);
   useEffect(() => {
     async function f() {
-      if (u_role === "Patient") {
-        let { data: data, err } = await supabase
-          .from("appointments")
-          .select("*")
-          .eq("patient_id", u_id);
-        if (err || data == null) console.log("user db error: ", err);
-        else {
-          setAppData(data[0]);
-        }
-      } else {
-        let { data: data, err } = await supabase
-          .from("appointments")
-          .select("*")
-          .eq("doctor_id", u_id);
-        if (err || data == null) console.log("user db error: ", err);
-        else {
-          setAppData(data[0]);
-        }
-      }
+      console.log("u_id: ", u_id);
+      console.log("role: ", u_role);
+      // if (u_role === "Patient") {
+      //   let { data: data, err } = await supabase
+      //     .from("appointments")
+      //     .select("*")
+      //     .eq("patient_id", u_id);
+      //   if (err || data == null) console.log("user db error: ", err);
+      //   else {
+      //     setAppData(data[0]);
+      //   }
+      // } else {
+      //   let { data: data, err } = await supabase
+      //     .from("appointments")
+      //     .select("*")
+      //     .eq("doctor_id", u_id);
+      //   if (err || data == null) console.log("user db error: ", err);
+      //   else {
+      //     setAppData(data[0]);
+      //   }
+      // }
     }
 
     f();
